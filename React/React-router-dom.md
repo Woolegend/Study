@@ -1,3 +1,5 @@
+> **last edit : 24.10.15**
+
 # React Router DOM
 
 SPA에서 페이지 나누기를 도와주는 라이브러리
@@ -178,3 +180,26 @@ function App() {
    <small>
    `Outlet` 은 중첩된 여러 레벨의 라우트를 지원한다. 여러 개의 `Outlet` 을 사용할 수 있어, 복잡한 라우트 구조를 쉽게 관리할 수 있다.
    </small>
+
+## 3. 동적 라우트
+
+### 3.1 useParams
+
+`useParam` 은 URL의 동적 파라미터를 추출하는데 사용되는 훅이다. 이 훅은 URL에서 추출한 파라미터를 포함하는 객체를 반환한다. 객체의 key는 Route에서 정의한 동적 파라미터의 이름과 일치한다.
+
+```js
+// localhost:3000/list/react
+
+// App.js
+<Route path="list" element={<StackListPage />} />
+ <Routeㄴㄴ path=":stack" element={<StackPage />} />
+</Routeㄴㄴ
+
+//StackPage.js
+function StackPage() {
+  const { stack } = useParams()
+  console.log(stack) // react
+}
+```
+
+위 코드를 보면 `list`를 경로로 가진 라우트의 내부에 `:stack` 파라미터를 경로로 가진 라우트가 들어있다. 이 경우 상수 `stack`의 값으로 'react'가 들어온다.
