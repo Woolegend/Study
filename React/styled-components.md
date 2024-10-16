@@ -4,7 +4,16 @@
 
 Styled Components는 컴포넌트를 만들면서 바로 스타일을 작성한다. 마친 React 컴포넌트를 만드는 것처럼 React스럽게 CSS를 사용하는 방식이다. 컴포넌트를 중심으로 스타일을 지정하는 방식은 편리할 뿐만 아니라, 개발 속도 또한 향상된다.
 
+**설치**
+
+```
+npm install styled-components
+
+npm i styled-components
+```
+
 ```js
+// App.js
 import styled from "styled-components";
 
 const Button = styled.button`
@@ -23,14 +32,6 @@ function App() {
 }
 
 export default App;
-```
-
-**설치**
-
-```
-npm install styled-components
-
-npm i styled-components
 ```
 
 ## 1. CSS의 문제점
