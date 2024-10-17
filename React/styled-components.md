@@ -1,4 +1,4 @@
-> **last edit 24.10.16**
+b> **last edit 24.10.16**
 
 # Styled Components
 
@@ -34,6 +34,27 @@ function App() {
 export default App;
 ```
 
+**※목차**
+
+- [Styled Components](#styled-components)
+  - [1. CSS의 문제점](#1-css의-문제점)
+    - [1.1. 컴포넌트 기반 아키텍처와의 불일치](#11-컴포넌트-기반-아키텍처와의-불일치)
+    - [1.2. 스타일 재활용의 어려움](#12-스타일-재활용의-어려움)
+    - [1.3. 동적 스타일의 한계](#13-동적-스타일의-한계)
+    - [1.4. 불필요한 스타일 로딩](#14-불필요한-스타일-로딩)
+  - [2 Styled Components 만들기](#2-styled-components-만들기)
+  - [3 네스팅(Nesting)](#3-네스팅nesting)
+    - [3.1. `&`선택자](#31-선택자)
+    - [3.2. 스타일 컴포넌트 선택자](#32-스타일-컴포넌트-선택자)
+  - [4. 다이나믹 스타일링](#4-다이나믹-스타일링)
+    - [4.1. 변수 사용하기](#41-변수-사용하기)
+    - [4.2. 함수 사용하기](#42-함수-사용하기)
+    - [4.3. 논리 연산자 사용하기](#43-논리-연산자-사용하기)
+  - [5. 스타일 재사용](#5-스타일-재사용)
+    - [5.1. 스타일 상속](#51-스타일-상속)
+    - [5.2. JSX 컴포넌트 스타일 적용](#52-jsx-컴포넌트-스타일-적용)
+    - [5.3. CSS 함수](#53-css-함수)
+
 ## 1. CSS의 문제점
 
 React는 컴포넌트 기반 아키텍처를 사용하지만, 전통적인 CSS는 전역 스코프를 가진다. 이로 인해 다음과 같은 문제가 발생할 수 있다.
@@ -49,7 +70,7 @@ React는 컴포넌트 기반 아키텍처를 사용하지만, 전통적인 CSS�
 - **불필요한 스타일 로딩**:  
   <small>전체 CSS 파일을 로드하면 실제 사용하지 않는 스타일도 함께 로드되어 성능에 영향을 줄 수 있다.</small>
 
-### 1.1 컴포넌트 기반 아키텍처와의 불일치
+### 1.1. 컴포넌트 기반 아키텍처와의 불일치
 
 ```js
 // App.js
@@ -114,14 +135,14 @@ const Dashboard = styled.div`
 
 function App() {
   return (
-    <StyledApp>
+    <StyledApp가가
       <Dashboard> ... </Dashboard>
     </StyledApp>
   );
 }
 ```
 
-Styled Components는 컴포넌트 별로 스타일을 격리하며 이를 해결했다. Styled Components를 사용하면 개발자가 코드를 작성할 때 클랙스를 작명할 필요가 없다. 개발이 끝나면 Styled Components각 각 디자인에 고유한 클래스 이름을 부여한다.
+Styled Components는 컴포넌트 별로 스타일을 격리하며 이를 해결했다. Styled Components를 사용하면 개발자가 코드를 작성할 때 클랙스를 작명할 필요가 없다. 개발이 끝나면 Styled Components가 각 디자인에 고유한 클래스 이름을 부여한다.
 
 ### 1.2. 스타일 재활용의 어려움
 
@@ -286,3 +307,411 @@ export default Button;
 기본적으로 웹 페이지에서는 전체 CSS 파일을 로드하기 때문에 불필요한 스타일을 불러오는 경우도 많다. 이 경우 성능의 저하로 이어질 수 있다.
 
 반면 Styled Components는 실제 사용되는 스타일만 DOM에 주어지기 때문에 비교적 좋은 성능을 유지할 수 있다.
+
+## 2 Styled Components 만들기
+
+Styled Components는 클래스 대신 컴포넌트를 만든다. 가장 기본적인 컴포넌트를 만드는 방식을 살펴보자
+
+```js
+// Button.js
+import styled from "styled-components";
+
+const Button = styled.button`
+  background-color: #6750a4;
+  border: none;
+  color: #ffffff;
+  padding: 16px;
+`;
+
+export default Button;
+```
+
+위 코드는 `<button>` 태그에 스타일을 지정한 컴포넌트다. `styled.tagname`의 `tagname` 부분에는 스타일을 적용할 HTML 태그 이름을 작성한다. 그리고, 바로 뒤에 템플릿 리터럴 문법으로 CSS 코드를 작성한다.
+
+```js
+// App.js
+import Button from "./Button";
+
+function App(){
+  return (
+    <div>
+      <Button>Hello Styled</Burron>
+    </div>
+  )
+}
+export default App;
+```
+
+완성된 `Button` 컴포넌트를 `App` 컴포넌트에 사용해보자
+
+![1번]()
+
+버튼 태그에 스타일이 잘 적용된 것을 확인할 수 있다.
+
+```html
+<div id="root">
+  <button class="sc-blHHsb VERNM">Hello Styled</button>
+</div>
+```
+
+개발자 도구를 확인해보면 Styled Components가 버튼에 고유한 클래스 이름 부여했다.
+
+## 3 네스팅(Nesting)
+
+Styled Components에서의 네스팅은 CSS 전처리기와 유사한 방식으로 스타일을 중첩하여 작성할 수 있게 해주는 기능이다. 이를 통해 컴포넌트의 구조를 더 직관적으로 표현하고 코드의 가독성을 높일 수 있다.
+
+하지만 과도한 네스팅은 오히려 구조를 복잡하게 만들고 가독성을 떨어뜨린다. 과도한 네스팅은 지양하도록 하자
+
+```css
+/*과도한 네스팅*/
+.container {
+  /* ... */
+  & .button {
+    /* ... */
+    & .icons {
+      /* ... */
+      &img {
+        /* ... */
+      }
+    }
+  }
+}
+```
+
+### 3.1. `&`선택자
+
+```js
+// Button.js
+import styled from "styled-components";
+
+const Button = styled.button`
+  background-color: #6750a4;
+  border: none;
+  color: #ffffff;
+  padding: 16px;
+
+  &:hover,
+  &:active {
+    background-color: #463770;
+  }
+`;
+
+export default Button;
+```
+
+Nesting에서 `&`는 부모 선택자를 의미한다. CSS코드로 비유해 보자.
+
+```css
+.Button {
+  background-color: #6750a4;
+  border: none;
+  color: #ffffff;
+  padding: 16px;
+}
+
+.Button:hover,
+.Button:active {
+  background-color: #463770;
+}
+```
+
+`button` 태그의 클래스 이름을 `.Button`이라 가정할 때, `&:hover`는 `.Button:hover`를 의미한다.
+
+### 3.2. 스타일 컴포넌트 선택자
+
+Styled Components에선 클래스 이름을 사용하지 않는다. 그럼 컴포넌트 안에 다른 컴포넌트를 선택하고 싶다면 어떻게 하면 될까?
+
+예를 들어 버튼 안에 존재하는 아이콘 이미지를 선택한다고 가정하자.
+
+```js
+import styled from "styled-components";
+import nailImg from "./nail.png";
+
+const Icon = styled.img`
+  width: 16px;
+  height: 16px;
+`;
+
+const StyledButton = styled.button`
+  background-color: #6750a4;
+  border: none;
+  color: #ffffff;
+  padding: 16px;
+
+  & ${Icon} {
+    margin-right: 4px;
+  }
+
+  &:hover,
+  &:active {
+    background-color: #463770;
+  }
+`;
+
+function Button({ children, ...buttonProps }) {
+  return (
+    <StyledButton {...buttonProps}>
+      <Icon src={nailImg} alt="nail icon" />
+      {children}
+    </StyledButton>
+  );
+}
+
+export default Button;
+```
+
+`Button` 컴포넌트의 템플릿 리터럴 내부에 `Icon` 컴포넌트를 삽입하면 된다. 이 때 사용된 `& ${Icon} { ... }` 부분을 **자손 결합자**(Descendant Combinator)라고 부른다.
+
+```css
+.StyledButton {
+  ...;
+}
+
+/* & ${Icon} { ... } */
+.StyledButton .Icon {
+  margin-right: 4px;
+}
+```
+
+자손 결합자를 기존 CSS로 표현해 본다면 위와 같이 나타낼 수 있다.
+
+```js
+const StyledButton = styled.button`
+  background-color: #6750a4;
+  border: none;
+  color: #ffffff;
+  padding: 16px;
+
+  ${Icon} {
+    margin-right: 4px;
+  }
+
+  &:hover,
+  &:active {
+    background-color: #463770;
+  }
+`;
+```
+
+자손 결합자를 사용할 경우 `&`를 생략해도 동일하게 동작합니다.
+
+```js
+const StyledButton = styled.button`
+  &:hover,
+  &:active {
+    background-color: #7760b4;
+
+    ${Icon} {
+      opacity: 0.2;
+    }
+  }
+`;
+```
+
+중첩 [Nesting](#3-nesting)도 가능하다.
+
+## 4. 다이나믹 스타일링
+
+props로 전달 받은 값을 활용해 동적으로 스타일을 적용할 수 있다. 템플릿 리터럴 안에 `${}`를 사용하여 JS코드를 삽입하는 것을 **표현식 삽입법**(Expression Interpolation)이라고 부른다. 표현식 삽입법을 사용해 전달받은 props에 따라 컴포넌트의 스타일을 다르게 보여줄 수 있다.
+
+### 4.1. 변수 사용하기
+
+```js
+const SIZES = {
+  large: 24,
+  medium: 20,
+  small: 16,
+};
+
+const Button = styled.button`
+  ...
+  font-size: ${SIZES["medium"]}px;
+`;
+```
+
+가장 기본적인 사용방법인 JS 변수를 그대로 삽입하는 방법
+
+### 4.2. 함수 사용하기
+
+```js
+const SIZES = {
+  large: 24,
+  medium: 20,
+  small: 16,
+};
+
+const Button = styled.button`
+  ...
+  font-size: ${(props) => SIZES[props.size] ?? SIZES["medium"]}px;
+`;
+```
+
+props를 이용한 함수의 리턴값을 삽입하는 방법
+
+### 4.3. 논리 연산자 사용하기
+
+```js
+const Button = styled.button`
+  ...
+  ${({ round }) => round && `border-radius: 9999px;`}
+`;
+```
+
+`&&` 연산자 사용하기
+
+```js
+border-radius: ${({ round }) => round ? `9999px` : `3px`};
+```
+
+삼항 연산자 사용하기
+
+## 5. 스타일 재사용
+
+### 5.1. 스타일 상속
+
+`styled()` 함수는 Styled Components로 만들어진 컴포넌트를 상속할 때 사용한다.
+
+```js
+// Button.js
+import styled from "styled-components";
+
+const SIZES = {
+  large: 24,
+  medium: 20,
+  small: 16,
+};
+
+const Button = styled.button`
+  background-color: #6750a4;
+  border: none;
+  color: #ffffff;
+  font-size: ${({ size }) => SIZES[size] ?? SIZES["medium"]}px;
+  padding: 16px;
+`;
+
+export default Button;
+```
+
+```js
+// App.js
+import styled from "styled-components";
+import Button from "./Button";
+
+const SubmitButton = styled(Button)`
+  background-color: #de117d;
+`;
+
+function App() {
+  return (
+    <div>
+      <SubmitButton>상속</SubmitButton>
+    </div>
+  );
+}
+
+export default App;
+```
+
+`styled(Button)`으로 `SubmitButton`은 `Button`의 스타일을 상속 받았다.
+
+### 5.2. JSX 컴포넌트 스타일 적용
+
+[스타일 상속](#51-스타일-상속)을 활용해 JSX 컴포넌트에도 스타일을 적용할 수 있다.
+
+```js
+// TermsOfService.js
+function TermsOfService({ className }) {
+  // className을 props로 받음
+  return (
+    // 스타일을 적용할 위치에 className을 적용
+    <div className={className}>
+      <h1>Styled Components 고수가 될거야!</h1>
+    </div>
+  );
+}
+
+export default TermsOfService;
+```
+
+```js
+// App.js
+import styled from "styled-components";
+import TermsOfService from "./TermsOfService";
+
+const StyledTermsOfService = styled(TermsOfService)`
+  background-color: #ededed;
+  border-radius: 8px;
+  padding: 16px;
+  width: 400px;
+`;
+
+function App() {
+  return (
+    <div>
+      <StyledTermsOfService />
+    </div>
+  );
+}
+
+export default App;
+```
+
+JSX 컴포넌트는 HTML 요소와 같이 `styled.tagname`의 방식으로 스타일을 적용할 수 없다. 때문에 스타일 상속과 같이 `styled()` 함수를 활용해 컴포넌트에 스타일을 적용한다.
+
+차이가 있다면 JSX문법으로 생성한 컴포넌트는 스타일이 적용될 위치를 정확히 알 수 없다. 그러므로 `className`을 props로 전달해 스타일을 적용할 정확한 위치를 명시해야한다.
+
+### 5.3. CSS 함수
+
+자주 사용되는 CSS 코드들은 변수처럼 저장해 사용하고 싶은 경험이 있을 것이다.
+그런 상황에 사용할 수 있는 `css` 함수를 알아보자
+
+```js
+import styled from "styled-components";
+
+const SIZES = {
+  large: "24px",
+  medium: "20px",
+  small: "16px",
+};
+
+const Button = styled.button`
+  ...
+  font-size: ${({ size }) => SIZES[size] ?? SIZES["medium"]};
+`;
+
+const Input = styled.input`
+  ...
+  font-size: ${({ size }) => SIZES[size] ?? SIZES["medium"]};
+`;
+```
+
+[앞에서는](#4-다이나믹-스타일링) 스타일 컴포넌트에 함수식을 바로 삽입해 동적인 스타일을 구현했다. 이 방법도 충분히 훌륭하다. 하지만, 함수식을 필요로 하는 컴포넌트가 더 늘어난다면, 이 함수식을 하나의 함수로 정의하는 것이 더 바람직할 것이다.
+
+```js
+// css 함수를 추가로 import 해야한다.
+import styled, { css } from "styled-components";
+
+const SIZES = {
+  large: "24px",
+  medium: "20px",
+  small: "16px",
+};
+
+const fontSize = css`
+  font-size: ${({ size }) => SIZES[size] ?? SIZES["medium"]};
+`;
+
+const Button = styled.button`
+  ...
+  ${fontSize}
+`;
+
+const Input = styled.input`
+  ...
+  ${fontSize}
+`;
+```
+
+`css` 함수는 styled components에 사용할 스타일을 재사용할 수 있도록 정의하는 함수다. 이 함수를 사용할 땐 꼭 `css`를 템플릿 리터럴 앞에 붙여야한다. `css`를 붙이지 않으면 props 값을 사용할 수 없다.
+
+props를 사용하지 않더라도 스타일을 정의할 땐 꼭 `css`함수를 사용하자
