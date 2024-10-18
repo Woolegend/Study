@@ -1,4 +1,4 @@
-b> **last edit 24.10.16**
+> **last edit 24.10.16**
 
 # Styled Components
 
@@ -44,7 +44,7 @@ export default App;
     - [1.4. 불필요한 스타일 로딩](#14-불필요한-스타일-로딩)
   - [2 Styled Components 만들기](#2-styled-components-만들기)
   - [3 네스팅(Nesting)](#3-네스팅nesting)
-    - [3.1. `&`선택자](#31-선택자)
+    - [3.1. `&` 선택자](#31--선택자)
     - [3.2. 스타일 컴포넌트 선택자](#32-스타일-컴포넌트-선택자)
   - [4. 다이나믹 스타일링](#4-다이나믹-스타일링)
     - [4.1. 변수 사용하기](#41-변수-사용하기)
@@ -54,6 +54,9 @@ export default App;
     - [5.1. 스타일 상속](#51-스타일-상속)
     - [5.2. JSX 컴포넌트 스타일 적용](#52-jsx-컴포넌트-스타일-적용)
     - [5.3. CSS 함수](#53-css-함수)
+  - [6. 글로벌 스타일](#6-글로벌-스타일)
+  - [7. 애니메이션 `keyframes`](#7-애니메이션-keyframes)
+  - [8. 테마 `ThemeProvider`](#8-테마-themeprovider)
 
 ## 1. CSS의 문제점
 
@@ -378,7 +381,7 @@ Styled Components에서의 네스팅은 CSS 전처리기와 유사한 방식으�
 }
 ```
 
-### 3.1. `&`선택자
+### 3.1. `&` 선택자
 
 ```js
 // Button.js
@@ -715,3 +718,194 @@ const Input = styled.input`
 `css` 함수는 styled components에 사용할 스타일을 재사용할 수 있도록 정의하는 함수다. 이 함수를 사용할 땐 꼭 `css`를 템플릿 리터럴 앞에 붙여야한다. `css`를 붙이지 않으면 props 값을 사용할 수 없다.
 
 props를 사용하지 않더라도 스타일을 정의할 땐 꼭 `css`함수를 사용하자
+
+## 6. 글로벌 스타일
+
+```js
+import { createGlobalStyle } from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+`;
+
+function App() {
+  return (
+    <>
+      <GlobalStyle />
+      <div>글로벌 스타일</div>
+    </>
+  );
+}
+
+export default App;
+```
+
+`createGlobalStyle` 함수는 다른 Styled Components 함수들과 마찬가지로 템플릿 리터럴 문법으로 사용한다. 이 함수는 `style` 태그를 컴포넌트로 만드는데, 해당 위치에 `style` 태그가 생성 되는건 아니다. Styled Components가 내부적으로 처리해서 `head` 태그 안에 우리가 작성한 CSS 코드를 삽입한다.
+
+```html
+<head>
+  <!-- ... -->
+  <style data-styled="active" data-styled-verstion="...">
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Noto Sans KR", sans-serif;
+    }
+  </style>
+</head>
+```
+
+적용된 스타일은 개발자 도구에서 확인할 수 있다.
+
+## 7. 애니메이션 `keyframes`
+
+CSS에서는 `@keyframes`를 사용했지만 stlyed components에서는 `keyframes` 함수를 사용한다. 이 함수는 다른 'styled` 함수들과 마찬가지로 템플릿 리터럴을 사용한다.
+
+```js
+// placeholder.js
+import styled, { keyframes } from "styled-components";
+
+const placeholderGlow = keyframes`
+  50% {
+    opacity: 0.2;
+  }
+`;
+
+export const PlaceholderItem = styled.div`
+  background-color: #888888;
+  height: 20px;
+  margin: 8px 0;
+`;
+
+const Placeholder = styled.div`
+  animation: ${placeholderGlow} 2s ease-in-out infinite;
+`;
+
+export default Placeholder;
+```
+
+```js
+// App.js
+import styled from "styled-components";
+import Placeholder, { PlaceholderItem } from "./Placeholder";
+
+const A = styled(PlaceholderItem)`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+`;
+
+const B = styled(PlaceholderItem)`
+  width: 400px;
+`;
+
+const C = styled(PlaceholderItem)`
+  width: 200px;
+`;
+
+function App() {
+  return (
+    <div>
+      <Placeholder>
+        <A />
+        <B />
+        <C />
+      </Placeholder>
+    </div>
+  );
+ㄴㄴ
+
+export default App;
+```
+
+`keyflames` 으로 만든 애니메이션을 `${placeholderGlow}` 처럼 템플릿 리터럴에 삽입하는 형태로 사용한다.
+
+`keyflames`이 반환하는 변수는 단순한 문자열이 아니라 JS 객체다. 때문에 `styled` 혹은 `css` 함수를 통해 사용해야 한다는 것을 주의하자
+
+## 8. 테마 `ThemeProvider`
+
+테마 기능을 만들기 위해서는 현재 테마로 설정된 값을 사이트 전체에서 참조할 수 있어야 한다. React에는 이런 상황에 쓰기 딱 좋은 Context가 있다. Styled Components에서도 `ThemeProvider` 를 활용해 Context 기반의 테마를 사용할 수 있다.
+
+```js
+import { ThemeProvider } from "styled-components";
+import Button from "./Button";
+
+function App() {
+  const theme = {
+    primaryColor: "#1da1f2",
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Button>확인</Button>
+    </ThemeProvider>
+  );
+}
+
+export default App;
+```
+
+`ThemeProvider` 는 Context Provider처럼 `theme` 이라는 객체를 내려준다. `ThemeProvider` 내부에서 사용하는 Stlyed Components로 만든 컴포넌트에서는 props를 사용하듯 `theme` 이라는 객체를 사용할 수 있다.
+
+```js
+const Button = styled.button`
+  background-color: ${({ theme }) => theme.primaryColor};
+  /* ... */
+`;
+```
+
+만약 여러 테마를 선택하고 싶다면 `useState` 를 활용해 보자
+
+```js
+import { useState } from "react";
+import { ThemeProvider } from "styled-components";
+import Button from "./Button";
+
+function App() {
+  const [theme, setTheme] = useState({
+    primaryColor: "#1da1f2",
+  });
+
+  const handleColorChange = (e) => {
+    setTheme((prevTheme) => ({
+      ...prevTheme,
+      primaryColor: e.target.value,
+    }));
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
+      <select value={theme.primaryColor} onChange={handleColorChange}>
+        <option value="#1da1f2">blue</option>
+        <option value="#ffa800">yellow</option>
+        <option value="#f5005c">red</option>
+      </select>
+      <br />
+      <br />
+      <Button>확인</Button>
+    </ThemeProvider>
+  );
+}
+
+export default App;
+```
+
+테마 설정 페이지를 만들다보면 styled components로 만들지 않은 컴포넌트에서도 `theme`을 참조할 필요가 있는데, 그럴 땐 `useContext`를 사용하여 일반적인 React Context를 불러오듯 `ThemeContext` 를 불러오면 된다.
+
+```js
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
+
+...
+
+function SettingPage() {
+  const theme = useContext(ThemeContext);
+}
+```
