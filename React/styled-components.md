@@ -1,5 +1,3 @@
-> **last edit 24.10.16**
-
 # Styled Components
 
 Styled Components는 컴포넌트를 만들면서 바로 스타일을 작성한다. 마친 React 컴포넌트를 만드는 것처럼 React스럽게 CSS를 사용하는 방식이다. 컴포넌트를 중심으로 스타일을 지정하는 방식은 편리할 뿐만 아니라, 개발 속도 또한 향상된다.
