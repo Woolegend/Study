@@ -1,5 +1,3 @@
-> **last edit : 24.10.15**
-
 # React Router DOM
 
 SPA에서 페이지 나누기를 도와주는 라이브러리
@@ -228,14 +226,14 @@ function App() {
 // App.js
 import { Route, useParams } from "react-router-dom";
 
-<Route path="list" element={<StackListPage />} />
- <Route path=":stack" element={<StackPage />} />
-</Route>
+<Route path="list" element={<StackListPage />}>
+  <Route path=":stack" element={<StackPage />} />
+</Route>;
 
 //StackPage.js
 function StackPage() {
-  const { stack } = useParams()
-  console.log(stack) // react
+  const { stack } = useParams();
+  console.log(stack); // react
 }
 ```
 
