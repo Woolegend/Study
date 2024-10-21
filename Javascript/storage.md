@@ -136,8 +136,7 @@ window.onstorage = () => {
 
 ## 참고
 
-> [Storage | mdn web docs](https://developer.mozilla.org/ko/docs/Web/API/Storage)
-
-```
-
-```
+> [Storage | mdn web docs](https://developer.mozilla.org/ko/docs/Web/API/Storage)  
+> [Window: storage event | mdn web docs](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event)  
+> [Storage for the web | web.dev](https://web.dev/articles/storage-for-the-web)  
+> [localStorage와 sessitonStorage | JAVASCRIPT.INFO](https://ko.javascript.info/localstorage)
