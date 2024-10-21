@@ -15,6 +15,7 @@ Web Storage API의 `storage` 인터페이스는 특정 도메인을 위한 세�
     - [`Storage.setItem()`](#storagesetitem)
     - [`Storage.removeItem()`](#storageremoveitem)
     - [`Storage.clear()`](#storageclear)
+  - [5. `storage` Event](#5-storage-event)
   - [참고](#참고)
 
 ## 1. Sesstion Storage
@@ -115,6 +116,28 @@ storage.removeItem("keyName");
 storage.clear();
 ```
 
+## 5. `storage` Event
+
+`window` 인터페이스에는 `storage` 이벤트는 `localStorage` 또는 `sessionStorage`가 다른 문서의 context로 수정될 때 발생한다.
+
+**사용법**
+
+```js
+// addEventListener
+window.addEventListener("storage", () => {
+  console.log(JSON.parse(window.localStorage.getItem("sampleList")));
+});
+
+// onstorage
+window.onstorage = () => {
+  console.log(JSON.parse(window.localStorage.getItem("sampleList")));
+};
+```
+
 ## 참고
 
 > [Storage | mdn web docs](https://developer.mozilla.org/ko/docs/Web/API/Storage)
+
+```
+
+```
