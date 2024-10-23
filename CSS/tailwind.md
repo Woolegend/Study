@@ -1,6 +1,6 @@
 # Tailwind CSS
 
-## 설치
+## 설치<sup>[#](https://tailwindcss.com/docs/guides/create-react-app)</sup>
 
 ### 1. React 프로젝트 생성
 
