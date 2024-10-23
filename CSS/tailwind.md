@@ -78,3 +78,35 @@ export default function App() {
   );
 }
 ```
+
+## 에디터 세팅
+
+### Tailwind CSS intelliSense
+
+[Tailwind CSS intelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)은 VSCode용 공식 확장프로그램이다.
+
+자동 완성, 구문 강조 등 고급 기능을 제공해 개발 능률을 높이고 사용자의 경험을 향상시킨다.
+
+### Prettier
+
+Tailwind는 공식 prettier 플러그인을 제공한다. 이것은 `className`을 권장하는 순서로 재배열한다.
+
+**설치**
+
+prettier-plugin-tailwindcss를 dev-dependency로 설치하기
+
+```
+npm install -D prettier prettier-plugin-tailwindcss
+```
+
+이후, `prettierrc`에 플러그인 추가
+
+```json
+// .prettierrc
+{
+  "plugins": ["prettier-plugin-tailwindcss"]
+}
+```
+
+> [prettier plugin tailwindcss | Github](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)  
+> [Prettier Configution | Prittier](https://prettier.io/docs/en/configuration.html)
