@@ -153,3 +153,26 @@ function sortArray(arr) {
   // 함수 내용
 }
 ```
+
+// @ts-check
+
+// TypeScript syntax를 사용하는 방법
+/\*\*
+
+- @typedef { (data: string, index?: number) => boolean } Predicate1
+  \*/
+
+// Closure syntax를 사용하는 방법
+/\*\*
+
+- @typedef { function(string, number=): boolean } Predicate2
+  \*/
+
+// JSDoc syntax를 사용하는 방법
+/\*\*
+
+- @callback Predicate3
+- @param {string} data
+- @param {number} [index]
+- @returns {boolean}
+  \*/
