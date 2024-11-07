@@ -32,6 +32,7 @@ npm i react-router-dom@6
     - [3.3. 잘못된 주소](#33-잘못된-주소)
     - [3.4. Navigate](#34-navigate)
     - [3.5. useNavigate](#35-usenavigate)
+  - [참고](#참고)
 
 ## 1. 핵심 컴포넌트
 
@@ -309,3 +310,7 @@ const handleHomeClick = () => navigate("/");
 
 <button onClick={handleHomeClick}>Home</button>;
 ```
+
+## 참고
+
+> [react-router-dom | npm](https://www.npmjs.com/package/react-router-dom)
