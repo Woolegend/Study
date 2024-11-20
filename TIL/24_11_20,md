@@ -127,3 +127,20 @@ function Page() {
 이는 프리렌더링과 연관이 있는데 이는 이후에 다시 다루겠다.
 
 외부 링크의 경우는 `Link`컴포넌트는 `a`태그와 동일하게 동작하기 때문에 따로 구분하지 않고 Next JS 환경에서는 `Link`컴포넌트는만 사용하면 된다.
+
+## useRouter로 쿼리 사용하기
+
+`useRouter`로 URL의 파라미터와 쿼리 파라미터를 얻을 수 있다.
+
+`/products/:id?tag=food` 에서 `id` 파라미터와 `tag` 쿼리 파라미터를 얻을려면 다음과 같이 `useRouter`를 사용하자
+
+```js
+import { useRouter } from "next/router";
+
+export default function Product() {
+  const router = useRouter();
+  const { id, tag } = router.query;
+}
+```
+
+Router에서 반환된 객체에서는 파라미터와 쿼리 파라미터를 따로 구분하지 않기 때문에 동일한 방식으로 얻을 수 있다.
