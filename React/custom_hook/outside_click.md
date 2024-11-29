@@ -3,7 +3,11 @@
 특정 요소의 외부 클릭을 감지하기 위한 커스텀 훅
 
 - **params** : `ref : RefObject` 감지할 대상의 선택자
-- **return** : `flag : boolean` 외부 클릭 여부
+- **return** :
+  - `get : boolean` 외부 클릭 여부
+    - 외부 클릭 시 : `flag === true`
+    - 내부 클릭 시 : `flag === false`
+  - `set : Dispatch<SetStateAction<boolean>>` 세터 함수
 
 ```ts
 // useOutsideClick.tsx
@@ -14,11 +18,11 @@ const useOutsideClick = <T extends HTMLElement>(ref: RefObject<T>) => {
 
   const handler = useCallback(
     (event: MouseEvent) => {
-      if (!ref?.current || ref.current.contains(event.target as Node)) {
-        setFlag(true);
+      if (ref?.current && ref.current.contains(event.target as Node)) {
+        setFlag(false);
         return;
       }
-      setFlag(false);
+      setFlag(true);
     },
     [ref]
   );
