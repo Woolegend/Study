@@ -80,7 +80,7 @@ Preflight는 보안 강화의 목적으론 좋지만 실제 요청에 대한 응
 서버에서도 마찬가지로 인증된 요청에 대해 일반적인 CORS 요청과는 다르게 대응해야한다.
 
 - 응답 헤더의 `Access-Control-Allow-Credentials` 항목을 true로 설정
-- 응답 헤더의 'Access-Control-Allow-Origin'의 값에 와일드카드 문자는 사용할 수 없다.
+- 응답 헤더의 `Access-Control-Allow-Origin`의 값에 와일드카드 문자는 사용할 수 없다.
 - 응답 헤더의 `Access-Control-Allow-Method`의 값에 와일드카드 문자는 사용할 수 없다.
 - 응답 헤더의 `Access-Control-Allow-Headers`의 값에 와일드카드 문자는 사용할 수 없다.
 
